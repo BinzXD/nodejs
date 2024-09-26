@@ -8,6 +8,7 @@ const QR = require('../../helper/qr');
 const fs = require('fs');
 const path = require('path');
 const JSZip = require('jszip');
+const { send } = require("process");
 
 
 
@@ -63,6 +64,7 @@ class Controller {
           "status_product",
           "qr"
         ],
+        order: [['createdAt', 'DESC']]
         // include: [{
         //   model: StatusProduct,
         //   as: 'status',
@@ -195,32 +197,33 @@ class Controller {
         });
       }
   
-      const zip = new JSZip(); // Membuat objek zip baru
+      const zip = new JSZip(); 
   
       for (const pallet of pallets) {
         if (pallet.qr) {
           // Decode base64 QR code dan simpan ke dalam buffer
           const buffer = Buffer.from(pallet.qr.split(',')[1], 'base64');
           
-          // Tambahkan file ke zip dengan nama berdasarkan code
+     
           zip.file(`${pallet.code}.png`, buffer);
         }
       }
   
-      // Set nama zip file dan buat zip
+      
       const zipBuffer = await zip.generateAsync({ type: 'nodebuffer' });
       const zipFileName = 'qrcodes.zip';
   
-      // Set header response untuk mengunduh file
+     
       res.set({
         'Content-Type': 'application/zip',
         'Content-Disposition': `attachment; filename="${zipFileName}"`,
       });
   
-      
-      // console.log(zipBuffer);
+    
       return res.send(zipBuffer);
+      
     } catch (error) {
+      console.log(error);
       return res.status(500).json({
         message: "Terjadi kesalahan saat mengunduh gambar",
         error: error.message,
