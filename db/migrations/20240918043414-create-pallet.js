@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('pallets', {
+    await queryInterface.createTable('m_pallets', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -13,29 +13,28 @@ module.exports = {
         type: Sequelize.STRING,
         unique: true
       },
-      qr: { 
+      qr_code: { 
         type: Sequelize.TEXT
       },
-      description: {
-        type: Sequelize.TEXT
+      status: {
+        type: Sequelize.ENUM('active', 'inactive'),  
+        allowNull: false,
       },
-      status_product: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: 'status_product',
-            schema: 'public'
-          },
-          key: 'id'
-        },
+      product_status: {
+        type: Sequelize.ENUM('good', 'reject', 'empty', 'pending'),  
+        allowNull: false,
       },
-      is_active: {
-        type: Sequelize.BOOLEAN
-      },
-      is_available: {
+      is_used: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: true,
+      },
+      location: {
+        type: Sequelize.STRING, 
+        allowNull: false,         
+      },
+      description: {
+        type: Sequelize.TEXT
       },
       createdAt: {
         allowNull: false,
@@ -48,6 +47,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('pallets');
+    await queryInterface.dropTable('m_pallets');
   }
 };

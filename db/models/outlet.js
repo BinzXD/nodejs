@@ -29,8 +29,8 @@ module.exports = (sequelize, DataTypes) => {
       }, 
     },
     description: DataTypes.TEXT,
-    adress: DataTypes.TEXT,
-    is_active:{ 
+    address: DataTypes.TEXT,
+    status:{ 
       type: DataTypes.BOOLEAN,
       get() {
         return this.getDataValue('is_active') ? 'aktif' : 'tidak aktif';
@@ -39,7 +39,7 @@ module.exports = (sequelize, DataTypes) => {
   }, {
     sequelize,
     modelName: 'Outlet',
-    tableName: 'outlets',
+    tableName: 'm_outlet',
   });
   return Outlet;
 };

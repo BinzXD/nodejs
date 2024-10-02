@@ -47,16 +47,15 @@ exports.bodySchema = checkSchema({
       errorMessage: 'Description must be a string',
     },
   },
-  is_active: {
-    notEmpty: {
-      errorMessage: 'is_active is required',
-    },
-    isBoolean: {
-      errorMessage: 'is_active must be a boolean (true or false)',
-    },
-    toBoolean: true, 
+  status: {
+    notEmpty: true,
+    errorMessage: 'Status is required',
+    isIn: {
+      options: [['active', 'inactive']],
+      errorMessage: 'Status must be active or inactive'
+    }
   },
-  adress: {
+  address: {
     notEmpty: {
       errorMessage: 'Adress is required',
     },
@@ -100,13 +99,13 @@ exports.updateSchema = checkSchema({
       errorMessage: 'Description must be a string',
     },
   },
-  is_active: {
-    isBoolean: {
-      errorMessage: 'is_active must be a boolean (true or false)',
-    },
-    toBoolean: true, 
+  status: {
+    isIn: {
+      options: [['active', 'inactive']],
+      errorMessage: 'Status must be active or inactive'
+    }
   },
-  adress: {
+  address: {
     isString: {
       errorMessage: 'Adress must be a string',
     },

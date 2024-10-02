@@ -2,7 +2,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable('outlets', {
+    await queryInterface.createTable('m_outlet', {
       id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
@@ -16,19 +16,20 @@ module.exports = {
       name: {
         type: Sequelize.STRING(100),
       },
+      status: {
+        type: Sequelize.ENUM('active', 'inactive'),  
+        allowNull: false,
+      },
       franchise: {
         type: Sequelize.BOOLEAN,
         allowNull: false,
         defaultValue: false, 
       },
+      address: {
+        type: Sequelize.TEXT
+      },
       description: {
         type: Sequelize.TEXT
-      },
-      adress: {
-        type: Sequelize.TEXT
-      },
-      is_active: {
-        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -41,6 +42,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable('outlets');
+    await queryInterface.dropTable('m_outlet');
   }
 };

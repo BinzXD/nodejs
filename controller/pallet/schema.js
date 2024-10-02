@@ -1,5 +1,6 @@
 const { checkSchema } = require("express-validator");
 const { db } = require('../../db/models');
+const { ENUM } = require("sequelize");
 const Pallet = db.pallet;
 
 exports.bodySchema = checkSchema({
@@ -28,26 +29,36 @@ exports.bodySchema = checkSchema({
       errorMessage: 'Description must be a string',
     },
   },
-  is_active: {
-    isBoolean: {
-      errorMessage: 'is_active must be a boolean (true or false)',
+  location:{
+    notEmpty:{
+      errorMessage: 'Locations is required',
     },
-    toBoolean: true, 
+    isString: {
+      errorMessage: 'Location must be a string',
+    },
   },
-  is_available: {
+  status: {
+    notEmpty: true,
+    errorMessage: 'Status is required',
+    isIn: {
+      options: [['active', 'inactive']],
+      errorMessage: 'Status must be active or inactive'
+    }
+  },
+  is_used: {
     isBoolean: {
       errorMessage: 'is_available must be a boolean (true or false)',
     },
-    optional: true,
+    optional:true,
     toBoolean: true, 
   },
-  status_product: {
-    notEmpty: {
-      errorMessage: 'Status Product is required',
-    },
-    isUUID: {
-      errorMessage: 'Status Product must be a valid UUID',
-    },
+  product_status: {
+    notEmpty: true,
+    errorMessage: 'product_status is required',
+    isIn: {
+      options: [['good', 'reject', 'pending','empty']],
+      errorMessage: 'Product_Status must be good or reject or pending or empty'
+    }
   },
 });
 
@@ -57,10 +68,11 @@ exports.updateSchema = checkSchema({
       errorMessage: 'Description must be a string',
     },
   },
-  is_active: {
-    isBoolean: {
-      errorMessage: 'is_active must be a boolean (true or false)',
-    },
-    toBoolean: true, 
-  },
+  status: {
+    errorMessage: 'Status is required',
+    isIn: {
+      options: [['active', 'inactive']],
+      errorMessage: 'Status must be active or inactive'
+    }
+  }
 });

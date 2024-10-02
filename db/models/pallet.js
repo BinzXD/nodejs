@@ -1,5 +1,5 @@
 "use strict";
-const { Model } = require("sequelize");
+const { Model, ENUM } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class pallet extends Model {
     /**
@@ -8,10 +8,6 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      pallet.belongsTo(models.Statusproduct, {
-        foreignKey: 'status_product',
-        as: 'status', 
-      });
     }
   }
   pallet.init(
@@ -21,30 +17,30 @@ module.exports = (sequelize, DataTypes) => {
         primaryKey: true,
       },
       code: DataTypes.STRING,
-      qr: DataTypes.TEXT,
-      description: DataTypes.TEXT,
-      status_product: {
-        type: DataTypes.UUID,
+      qr_code: DataTypes.TEXT,
+      status:{ 
+        type: DataTypes.ENUM('active', 'inactive'),
+        allowNull: false,
       },
-      is_active:{ 
-        type: DataTypes.BOOLEAN,
-        get() {
-          return this.getDataValue('is_active') ? 'aktif' : 'tidak aktif';
-        },
-      },
-      is_available: {
+      is_used: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: true,
         get() {
-          return this.getDataValue('is_available') ? 'Tersedia' : 'Digunakan';
+          return this.getDataValue('is_used') ? 'Tersedia' : 'Digunakan';
         }, 
       },
+      product_status: {
+        type: DataTypes.ENUM('good', 'reject', 'empty', 'pending'),
+        allowNull: false,
+      },
+      location: DataTypes.STRING,
+      description: DataTypes.TEXT,
     },
     {
       sequelize,
       modelName: "pallet",
-      tableName: 'pallets',
+      tableName: 'm_pallets',
     }
   );
   return pallet;

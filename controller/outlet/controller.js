@@ -11,7 +11,7 @@ class Controller {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { code, name, description, franchise,  is_active,  adress } = req.body;
+    const { code, name, description, franchise,  status,  address } = req.body;
 
     try {
       const newOutlet = await Outlet.create({
@@ -19,9 +19,9 @@ class Controller {
         code,
         name,
         franchise,
-        adress,
+        address,
         description,
-        is_active,
+        status,
       });
       return res.status(201).json({
         message: "Oulet berhasil dibuat",
@@ -45,8 +45,8 @@ class Controller {
               "name",
               "franchise",
               "description",
-              "adress",
-              "is_active",
+              "address",
+              "status",
             ],
             order: [['createdAt', 'DESC']]
           });
@@ -67,7 +67,7 @@ class Controller {
 
   static async edit(req, res) {
     const { id } = req.params;
-    const { code, name, franchise, description, adress, is_active } = req.body;
+    const { code, name, franchise, description, address, status } = req.body;
 
   try {
     const outlet = await Outlet.findOne({ where: { id } });
@@ -82,8 +82,8 @@ class Controller {
       name,
       franchise,
       description,
-      adress,
-      is_active,
+      address,
+      status,
     });
     return res.status(200).json({
       message: "Outlet berhasil diperbarui",

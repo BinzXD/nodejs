@@ -18,25 +18,26 @@ class Controller {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const { code, description, is_active, status_product } = req.body;
-    const is_available =
-      req.body.is_available !== undefined ? req.body.is_available : true;
+    const { code, description, status, product_status, location } = req.body;
+    const is_used =
+      req.body.is_used !== undefined ? req.body.is_used : true;
 
     try {
       const newPallet = await Pallet.create({
         id: UUID.v4(),
         code,
         description,
-        is_available,
-        status_product,
-        is_active,
+        is_used,
+        location,
+        product_status,
+        status,
       });
 
       const value = { code: newPallet.code };
       const valJson = JSON.stringify(value);
-      const qr = await QR.generateQR(valJson);
+      const qr_code = await QR.generateQR(valJson);
 
-      newPallet.qr = qr;
+      newPallet.qr_code = qr_code;
       await newPallet.save();
 
       return res.status(201).json({

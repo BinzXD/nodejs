@@ -45,6 +45,6 @@ db.Sequelize = Sequelize;
 db.user = require('./user')(sequelize, Sequelize)
 db.outlet = require('./outlet')(sequelize, Sequelize)
 db.pallet = require('./pallet')(sequelize, Sequelize)
-db.status_product = require('./status_product')(sequelize, Sequelize)
+
 
 module.exports = {db};
